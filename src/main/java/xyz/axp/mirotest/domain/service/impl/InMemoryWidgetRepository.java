@@ -6,16 +6,13 @@ import xyz.axp.mirotest.domain.service.WidgetPage;
 import xyz.axp.mirotest.domain.service.WidgetRepository;
 import xyz.axp.mirotest.util.Rectangle;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.WeakHashMap;
+import java.util.*;
 
 @Repository
 public class InMemoryWidgetRepository implements WidgetRepository {
 
     private volatile InMemoryDB index = InMemoryDB.empty();
-    private volatile WeakHashMap<Integer, InMemoryDB> history = new WeakHashMap<>();
+    private final Map<Integer, InMemoryDB> history = Collections.synchronizedMap(new WeakHashMap<>());
 
     static WidgetPage makePage(Widget[] result, int offset, int limit, int version) {
         int resSize = Math.min(result.length - offset, limit);
