@@ -7,6 +7,7 @@ import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import xyz.axp.mirotest.domain.entities.Widget;
+import xyz.axp.mirotest.domain.service.CreateWidgetDTO;
 import xyz.axp.mirotest.domain.service.WidgetPage;
 import xyz.axp.mirotest.domain.service.WidgetService;
 import xyz.axp.mirotest.exceptions.InvalidSearchParametersException;
@@ -36,7 +37,7 @@ public class WidgetApi {
     }
 
     @PostMapping
-    public Widget create(@RequestBody @Valid Widget widget, BindingResult bindingResult) {
+    public Widget create(@RequestBody @Valid CreateWidgetDTO widget, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new InvalidWidgetException(bindingResult.toString());
         }

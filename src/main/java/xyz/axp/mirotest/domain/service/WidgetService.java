@@ -19,7 +19,11 @@ public class WidgetService {
         return repository.getById(id).orElseThrow(WidgetNotFoundException::new);
     }
 
-    public Widget createNew(Widget widget) {
+    public Widget createNew(CreateWidgetDTO dto) {
+        Widget widget = new Widget(null, dto.getX(), dto.getY(),
+                dto.getZ() == null ? repository.getForeground() : dto.getZ(),
+                dto.getWidth(),
+                dto.getHeight());
         return repository.createNew(widget);
     }
 

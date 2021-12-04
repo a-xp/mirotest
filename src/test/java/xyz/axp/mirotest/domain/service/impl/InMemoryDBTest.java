@@ -3,7 +3,8 @@ package xyz.axp.mirotest.domain.service.impl;
 import org.junit.jupiter.api.Test;
 import xyz.axp.mirotest.domain.entities.Widget;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class InMemoryDBTest {
 
@@ -35,4 +36,11 @@ class InMemoryDBTest {
         assertEquals(4, db.getWidgets().get(6).getZ());
     }
 
+    @Test
+    void getForeground() {
+        InMemoryDB db = InMemoryDB.empty();
+        assertEquals(0, db.getForeground());
+        db = db.copyWithInsert(getWidget(1));
+        assertEquals(2, db.getForeground());
+    }
 }

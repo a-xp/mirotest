@@ -31,6 +31,7 @@ public class InMemoryWidgetRepository implements WidgetRepository {
     @Override
     public synchronized Widget createNew(Widget newWidget) {
         InMemoryDB index = this.index;
+
         InMemoryDB newIndex = index.copyWithInsert(newWidget);
         replaceIndex(newIndex);
         return newIndex.getWidgets().get(newIndex.getLastId());
@@ -62,6 +63,11 @@ public class InMemoryWidgetRepository implements WidgetRepository {
     public Optional<WidgetPage> findAllWithSnapshotId(int offset, int limit, int snapshotId, Rectangle boundaries) {
         return Optional.ofNullable(history.get(snapshotId))
                 .map(index -> getFilteredPage(index, boundaries, offset, limit));
+    }
+
+    @Override
+    public int getForeground() {
+        return index.getForeground();
     }
 
     WidgetPage getFilteredPage(InMemoryDB index, Rectangle boundaries, int offset, int limit) {

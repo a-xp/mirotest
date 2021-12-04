@@ -128,6 +128,14 @@ class InMemoryDB {
         }
     }
 
+    public int getForeground() {
+        if (order.length > 0) {
+            return order[order.length - 1].getZ() + 1;
+        } else {
+            return 0;
+        }
+    }
+
     private int ins_pos(int pos) {
         return pos < 0 ? -(pos + 1) : pos;
     }

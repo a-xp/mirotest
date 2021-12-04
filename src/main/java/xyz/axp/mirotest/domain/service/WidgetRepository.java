@@ -18,4 +18,6 @@ public interface WidgetRepository {
     WidgetPage findAll(int offset, int limit, Rectangle boundaries);
 
     Optional<WidgetPage> findAllWithSnapshotId(int offset, int limit, int snapshotId, Rectangle boundaries);
+
+    int getForeground();
 }
