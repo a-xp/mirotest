@@ -1,30 +1,32 @@
 package xyz.axp.mirotest.util;
 
 import org.junit.jupiter.api.Test;
-import xyz.axp.mirotest.util.Rectangle;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RectangleTest {
 
-    @Test
-    void contains() {
-        Rectangle r1 = Rectangle.fromXYWH(0, 0, 10, 10);
-        assertTrue(r1.contains(Rectangle.fromXYWH(0 , 0 , 5 ,5)));
-        assertFalse(r1.contains(Rectangle.fromXYWH(5, 5, 10 ,10)));
+    private Rectangle rect10x10() {
+        return Rectangle.fromXYWH(0, 0, 10, 10);
+    }
+
+    private Rectangle rect10x10at5() {
+        return Rectangle.fromXYWH(5, 5, 10, 10);
+    }
+
+    private Rectangle rect20x20() {
+        return Rectangle.fromXYWH(0, 0, 20, 20);
     }
 
     @Test
-    void expand() {
-        Rectangle r1 = Rectangle.fromXYWH(0, 0, 10, 10);
-        r1.expand(Rectangle.fromXYWH(5, 5, 10 ,10));
-        assertEquals(Rectangle.fromXYWH(0 ,0 , 15, 15), r1);
-    }
+    void test_contains_is_true_only_when_fully_contained() {
+        Rectangle r10 = rect10x10();
+        Rectangle r10at5 = rect10x10at5();
+        Rectangle r20 = rect20x20();
 
-    @Test
-    void intersect() {
-        Rectangle r1 = Rectangle.fromXYWH(0, 0, 10, 10);
-        Rectangle r2 = Rectangle.fromXYWH(5, 5, 10 ,10);
-        assertEquals(Rectangle.fromXYWH(5, 5, 5 ,5), r1.intersect(r2));
+        assertTrue(r20.contains(r10));
+        assertFalse(r10.contains(r10at5));
+        assertFalse(r10.contains(r20));
     }
 }

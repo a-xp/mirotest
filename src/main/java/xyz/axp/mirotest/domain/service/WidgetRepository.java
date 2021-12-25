@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface WidgetRepository {
 
-    Widget createNew(Widget widget);
+    Widget createNew(Widget widget, boolean moveToForeground);
 
     Optional<Widget> getById(int id);
 
@@ -19,5 +19,4 @@ public interface WidgetRepository {
 
     Optional<WidgetPage> findAllWithSnapshotId(int offset, int limit, int snapshotId, Rectangle boundaries);
 
-    int getForeground();
 }

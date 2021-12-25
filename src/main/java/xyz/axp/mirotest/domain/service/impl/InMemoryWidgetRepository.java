@@ -11,8 +11,8 @@ import java.util.*;
 @Repository
 public class InMemoryWidgetRepository implements WidgetRepository {
 
-    private volatile InMemoryDB index = InMemoryDB.empty();
     private final Map<Integer, InMemoryDB> history = Collections.synchronizedMap(new WeakHashMap<>());
+    private volatile InMemoryDB index = InMemoryDB.empty();
 
     static WidgetPage makePage(Widget[] result, int offset, int limit, int version) {
         int resSize = Math.min(result.length - offset, limit);
@@ -26,9 +26,11 @@ public class InMemoryWidgetRepository implements WidgetRepository {
     }
 
     @Override
-    public synchronized Widget createNew(Widget newWidget) {
+    public synchronized Widget createNew(Widget newWidget, boolean moveToForeground) {
         InMemoryDB index = this.index;
-
+        if (moveToForeground) {
+            newWidget.setZ(index.getForeground());
+        }
         InMemoryDB newIndex = index.copyWithInsert(newWidget);
         replaceIndex(newIndex);
         return newIndex.getWidgets().get(newIndex.getLastId());
@@ -60,11 +62,6 @@ public class InMemoryWidgetRepository implements WidgetRepository {
     public Optional<WidgetPage> findAllWithSnapshotId(int offset, int limit, int snapshotId, Rectangle boundaries) {
         return Optional.ofNullable(history.get(snapshotId))
                 .map(index -> getFilteredPage(index, boundaries, offset, limit));
-    }
-
-    @Override
-    public int getForeground() {
-        return index.getForeground();
     }
 
     WidgetPage getFilteredPage(InMemoryDB index, Rectangle boundaries, int offset, int limit) {

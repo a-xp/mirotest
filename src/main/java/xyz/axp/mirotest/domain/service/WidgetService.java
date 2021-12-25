@@ -20,11 +20,12 @@ public class WidgetService {
     }
 
     public Widget createNew(CreateWidgetDTO dto) {
+        boolean moveToForeground = dto.getZ() == null;
         Widget widget = new Widget(null, dto.getX(), dto.getY(),
-                dto.getZ() == null ? repository.getForeground() : dto.getZ(),
+                moveToForeground ? 0 : dto.getZ(),
                 dto.getWidth(),
                 dto.getHeight());
-        return repository.createNew(widget);
+        return repository.createNew(widget, moveToForeground);
     }
 
     public Widget update(int id, Widget widget) {

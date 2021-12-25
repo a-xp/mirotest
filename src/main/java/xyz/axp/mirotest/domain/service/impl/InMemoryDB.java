@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import xyz.axp.mirotest.domain.entities.Widget;
-import xyz.axp.mirotest.domain.service.impl.sp_index.SpatialIndex;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -18,7 +17,7 @@ class InMemoryDB {
     private final static Comparator<Widget> BY_Z = Comparator.comparing(Widget::getZ);
     private Map<Integer, Widget> widgets;
     private Widget[] order;
-    private SpatialIndex spatialIndex;
+    private WidgetSpatialIndex spatialIndex;
     private int lastId;
     private int version;
 
@@ -40,12 +39,12 @@ class InMemoryDB {
     }
 
     private static InMemoryDB create(Map<Integer, Widget> widgets, Widget[] order, int lastId, int version) {
-        SpatialIndex spatialIndex = SpatialIndex.index(Arrays.asList(order), SpatialIndex.DEFAULT_LEVELS, SpatialIndex.DEFAULT_FACTOR);
+        WidgetSpatialIndex spatialIndex = WidgetSpatialIndex.index(Arrays.asList(order));
         return new InMemoryDB(widgets, order, spatialIndex, lastId, version);
     }
 
     public static InMemoryDB empty() {
-        return new InMemoryDB(Map.of(), new Widget[0], SpatialIndex.empty(), 0, 1);
+        return new InMemoryDB(Map.of(), new Widget[0], WidgetSpatialIndex.empty(), 0, 1);
     }
 
     public InMemoryDB copyWithDelete(int id) {
